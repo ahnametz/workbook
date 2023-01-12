@@ -13,4 +13,4 @@
   </Connection>
 </Query>
 
-Customers.Where(x => x.Country.Contains("USA")).OrderBy(x => x.FirstName )
+Customers.Where(x => x.Country.Contains("USA")).OrderBy(x => x.LastName )
