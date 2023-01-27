@@ -53,13 +53,28 @@ void Main()
 														})
 							});
 	results.Dump();
-	
+
 	//list all albums that are from 1990.
 	//display the album title and artist
 	//for each album, display the track info Name and genre description.
 	//(you do not need to strongly type the collections
 	//  if you want to, you can practice setting up a strongly type set of classes)
-	
+	var albumtracks = Albums
+					.Where(x => x.ReleaseYear == 1990)
+					.Select(x => new
+					{
+						Title = x.Title,
+						Artist = x.Artist.Name,
+						Tracks = x.Tracks
+								.Select(y => new
+								{
+									Song = y.Name,
+									Genre = y.Genre.Name
+								})
+					})
+					.Dump();
+
+
 }
 
 // You can define other methods, fields, classes and namespaces here
