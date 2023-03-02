@@ -2,7 +2,6 @@
   <Connection>
     <ID>1e60c205-2a80-4713-80b8-ee23984ea5d1</ID>
     <NamingServiceVersion>2</NamingServiceVersion>
-    <Persist>true</Persist>
     <Driver Assembly="(internal)" PublicKeyToken="no-strong-name">LINQPad.Drivers.EFCore.DynamicDriver</Driver>
     <Server>.</Server>
     <Database>Chinook</Database>
@@ -27,10 +26,15 @@ void Main()
 		int trackid;
 		//setup test data
 		//good data
-		playlistname="hansenb1";
-		username="HansenB";
-		trackid = 1;
+		//playlistname="hansenb1";
+		//username="HansenB";
+		//trackid = 12;
 
+		//good data new playlist
+		playlistname = "hansenb111";
+		username = "HansenB";
+		trackid = 12;
+		
 		//bad data (test validation)
 		//playlistname = "";
 		//username = "";
@@ -94,7 +98,16 @@ public void DisplayPlaylist(string playlistname, string username)
 	IEnumerable info = Playlists
 						.Where(p => p.Name.ToUpper().Equals(playlistname)
 						         && p.UserName.ToUpper().Equals(username) )
-						.Select(p => p);
+						.Select(p => new
+						{
+							PlaylistID = p.PlaylistId,
+							Name = p.Name,
+							theTracks = p.PlaylistTracks
+										.Select(trk => trk)
+										.OrderBy(trk => trk.TrackNumber)
+										.AsEnumerable()
+						}
+						);
 	info.Dump();
 }
 
@@ -180,14 +193,61 @@ void PlaylistTrack_AddTrack(string playlistname, string username, int trackid)
 		//PROBLEM!!!!!!!!
 		//what if this is a NEW playlist?
 		//
+		//in our situation where there is a NEW playlist, we do not know
+		//		the pkey value to that playlist AND it is needed to stage
+		//		the adding of the playlist track.
+		
+		//the new playlist record is only staged at this moment and NOT
+		//		on the database.
+		//Once the playlist record is passed to the database via the SaveChanges
+		//		the database will create the identity pkey value
+		//
+		//However the SaveChanges for this transaction NOT CAN be executed UNTIL
+		//		all records for the transaction have been staged
+		//We cannot stage the adding of the playlist track UNTIL we have the 
+		//		playlist identity pkey
+		
+		//this seems like a "Catch-22" scenario (aka which comes first chicken or the egg)
+		
+		//Solution
+		
+		// it is built into EntityFramework software and is based on using the
+		//		navigational property in Playlist pointing to its "child"
+		
+		//Staging a typical Add in the past was to reference the entity
+		//	and us the syntax  entity.Add(xxxxx)
+		//  thus we assume on could use PlaylistTracks.Add(xxxxx)
+		//IF you use this statement, the playlistid would be zero (0)
+		//	resulting in an abort
+		
+		//INSTEAD. 
+		// do the staging using the syntax of
+		//		parentinstance.navigationalproperty.Add(xxxxx)
+		//
+		// parentinstance here will be either
+		//		a) the NEW staged playlist instance
+		//   OR b) the existing playlist instance
+		
+		//EntityFrame will process the stage records in the correct order to
+		//  a) create the new Playlist record (if one was staged)
+		//  b) if the playlisttrack record is missing the PlaylistID, EntityFramework
+		//		will place the new identity pkey into the correct place on
+		//		the playlisttrack record
+		//OR
+		//  it simply uses the existing playlist pkey for the playlisttrack record
+		
+		playlistexist.PlaylistTracks.Add(playlisttrackexist);
+		
 		
 	}	
-					
-	//decide whether to SaveChanges OR throw the error collect
+	//At this point, NO data has yet to be sent to the database
+	//All required transactional records SHOULD have be stage at this point
+	//Decide whether to SaveChanges OR throw the error collect
 	if(errorlist.Count( ) > 0)
 	{
 		//throw the collection of errors 
 		throw new AggregateException("Processing concerns, please review",errorlist);
+		//drop out of method NO SAVECHANGES!!!!!!
 	}
 	else
 	{
