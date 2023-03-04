@@ -2,6 +2,7 @@
   <Connection>
     <ID>1e60c205-2a80-4713-80b8-ee23984ea5d1</ID>
     <NamingServiceVersion>2</NamingServiceVersion>
+    <Persist>true</Persist>
     <Driver Assembly="(internal)" PublicKeyToken="no-strong-name">LINQPad.Drivers.EFCore.DynamicDriver</Driver>
     <Server>.</Server>
     <Database>Chinook</Database>
@@ -23,15 +24,17 @@ void Main()
 	{
 		//Driver
 		List<PlayListTrackTRX> trackcollection = null;
-		string playlist = "hansenb1";
+		string playlist = "hansenb400";
 		string username = "HansenB";
 		//see the old data
 		DisplayPlaylist(playlist, username );
 		//need to create a good set of data
-		
+		//trackcollection = CreateGoodData();
 		//need to create a bad set of data
+		trackcollection = CreateBadData();
 		
 		//execute service to test for ALL possible errors that have been coded
+		PlaylistTrack_RemoveTracks(playlist, username, trackcollection);
 		
 		//testing for missing parameters
 		//PlaylistTrack_RemoveTracks(playlist, username, trackcollection);
@@ -79,6 +82,129 @@ private Exception GetInnerException(Exception ex)
 }
 
 //creating test data collection
+public List<PlayListTrackTRX> CreateGoodData()
+{
+	List<PlayListTrackTRX> info = new List<UserQuery.PlayListTrackTRX>();
+	PlayListTrackTRX row = new PlayListTrackTRX()
+	{
+		SelectedTrack = false,
+		TrackId = 54,
+		CurrentTrackNumber= 1,
+		NewTrackNumber = 0};
+	info.Add(row);
+	row = new PlayListTrackTRX()
+	{
+		SelectedTrack = false,
+		TrackId = 122,
+		CurrentTrackNumber = 2,
+		NewTrackNumber = 0
+	};
+	info.Add(row);
+	row = new PlayListTrackTRX()
+	{
+		SelectedTrack = true,
+		TrackId = 1,
+		CurrentTrackNumber = 3,
+		NewTrackNumber = 0
+	};
+	info.Add(row);
+	row = new PlayListTrackTRX()
+	{
+		SelectedTrack = true,
+		TrackId = 12,
+		CurrentTrackNumber = 4,
+		NewTrackNumber = 0
+	};
+	info.Add(row);
+	row = new PlayListTrackTRX()
+	{
+		SelectedTrack = false,
+		TrackId = 11,
+		CurrentTrackNumber = 5,
+		NewTrackNumber = 0
+	};
+	info.Add(row);
+	row = new PlayListTrackTRX()
+	{
+		SelectedTrack = true,
+		TrackId = 200,
+		CurrentTrackNumber = 6,
+		NewTrackNumber = 0
+	};
+	info.Add(row);
+	row = new PlayListTrackTRX()
+	{
+		SelectedTrack = false,
+		TrackId = 111,
+		CurrentTrackNumber = 7,
+		NewTrackNumber = 0
+	};
+	info.Add(row);
+	return info;
+}
+
+public List<PlayListTrackTRX> CreateBadData()
+{
+	List<PlayListTrackTRX> info = new List<UserQuery.PlayListTrackTRX>();
+	PlayListTrackTRX row = new PlayListTrackTRX()
+	{
+		SelectedTrack = false,
+		TrackId = 54,
+		CurrentTrackNumber = 1,
+		NewTrackNumber = 0
+	};
+	info.Add(row);
+	row = new PlayListTrackTRX()
+	{
+		SelectedTrack = false,
+		TrackId = 122,
+		CurrentTrackNumber = 2,
+		NewTrackNumber = 0
+	};
+	info.Add(row);
+	row = new PlayListTrackTRX()
+	{
+		SelectedTrack = true,
+		TrackId = 1,
+		CurrentTrackNumber = 3,
+		NewTrackNumber = 0
+	};
+	info.Add(row);
+	row = new PlayListTrackTRX()
+	{
+		SelectedTrack = true,
+		TrackId = 12,
+		CurrentTrackNumber = 4,
+		NewTrackNumber = 0
+	};
+	info.Add(row);
+	row = new PlayListTrackTRX()
+	{
+		SelectedTrack = false,
+		TrackId = 110,
+		CurrentTrackNumber = 5,
+		NewTrackNumber = 0
+	};
+	info.Add(row);
+	row = new PlayListTrackTRX()
+	{
+		SelectedTrack = false,
+		TrackId = 200,
+		CurrentTrackNumber = 6,
+		NewTrackNumber = 0
+	};
+	info.Add(row);
+	row = new PlayListTrackTRX()
+	{
+		SelectedTrack = false,
+		TrackId = 111,
+		CurrentTrackNumber = 7,
+		NewTrackNumber = 0
+	};
+	info.Add(row);
+	return info;
+}
+// CQRS class
 public class PlayListTrackTRX
 {
 	public bool SelectedTrack { get; set; }
