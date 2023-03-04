@@ -31,16 +31,16 @@ void Main()
 		//need to create a good set of data
 		//trackcollection = CreateGoodData();
 		//need to create a bad set of data
-		trackcollection = CreateBadData();
+		//trackcollection = CreateBadData();
 		
 		//execute service to test for ALL possible errors that have been coded
-		PlaylistTrack_RemoveTracks(playlist, username, trackcollection);
+		//PlaylistTrack_ReOrgTracks(playlist, username, trackcollection);
 		
 		//testing for missing parameters
-		//PlaylistTrack_RemoveTracks(playlist, username, trackcollection);
+		//PlaylistTrack_ReOrgTracks(playlist, username, trackcollection);
 		
 		//testing for empty collection, empty instance
-		//PlaylistTrack_RemoveTracks(playlist, username, new List<PlayListTrackTRX>());
+		//PlaylistTrack_ReOrgTracks(playlist, username, new List<PlayListTrackTRX>());
 		
 		//see the altered data
 		DisplayPlaylist(playlist, username);
@@ -235,7 +235,7 @@ public void DisplayPlaylist(string playlistname, string username)
 }
 
 // TRX service method 
-void PlaylistTrack_RemoveTracks(string playlist, string username, List<PlayListTrackTRX> trackcollection)
+void PlaylistTrack_ReOrgTracks(string playlist, string username, List<PlayListTrackTRX> trackcollection)
 {
 	List<Exception> errorlist = new List<Exception>();
 	Tracks trackexist = null;
@@ -260,7 +260,7 @@ void PlaylistTrack_RemoveTracks(string playlist, string username, List<PlayListT
 	//does the List<T> instance have any items
 	if(trackcollection.Count() == 0)
 	{
-		errorlist.Add(new Exception("You record list is empty. Nothing to remove."));
+		errorlist.Add(new Exception("You record list is empty. Nothing to resequence."));
 	}
 	else
 	{
@@ -275,51 +275,46 @@ void PlaylistTrack_RemoveTracks(string playlist, string username, List<PlayListT
 			errorlist.Add(new Exception($"Your playlist {playlist} does not exist on file."));
 
 		}
-		int anyselectedtrack = trackcollection
-								.Where(x => x.SelectedTrack)
-								.Count();
-		if (anyselectedtrack == 0)
-		{
-			errorlist.Add(new Exception($"You did not select any track to remove from play list {playlist}."));
-		}
-
-		//create a collection from the trackcollection of the tracks to keep AND order by the
-		//		current track number for re-sequencing later
-		IEnumerable<PlayListTrackTRX> keeplist = trackcollection
-													.Where(t => !t.SelectedTrack)
-													.Select(t => t)
-													.OrderBy(t => t.CurrentTrackNumber);
-		//remove the unwanted tracks
-		IEnumerable<PlayListTrackTRX> removelist = trackcollection
-													.Where(t => t.SelectedTrack)
-													.Select(t => t);
-
-		//process the tracks to remove (Stage a .Remove(xxxx) on PlaylistTracks)
-		//whats need?
-		//   I need the instance of the table (via EF) to stage the Remove
-		foreach (PlayListTrackTRX item in removelist)
-		{
-			playlisttrackexist = PlaylistTracks
-								 .FirstOrDefault(x => x.Playlist.Name.ToUpper().Equals(playlist.ToUpper())
-										  && x.Playlist.UserName.ToUpper().Equals(username.ToUpper())
-										  && x.TrackId == item.TrackId);
-			if (playlisttrackexist !=null)
-			{
-				PlaylistTracks.Remove(playlisttrackexist);
-			}
-			else
-			{
-				//what if it does not exist?
-				//what if someone has already removed it?
-				//Do we care?
-				//maybe since it was to be remove anyways: why worry?
-			}
-		}
 		
-		//handle the keep list
+		//sort trackcollection by the reorganize numbers
+		trackcollection.Sort((x,y) => x.NewTrackNumber.CompareTo(y.NewTrackNumber));
+
+		//check that all NewTrackNumbers are non-zero positive values
+		//
+		foreach (PlayListTrackTRX item in trackcollection)
+		{
+			if (item.NewTrackNumber < 1)
+			{
+				//retrieve the songname from the database to use in my error message
+				var songname = Tracks
+								.Where(x => x.TrackId == item.TrackId)
+								.Select(x => x.Name)
+								.SingleOrDefault();
+				errorlist.Add(new Exception($"The track {songname} has an invalid resequence number {item.NewTrackNumber}. Try again."));
+			}
+		}
+		//test for duplicate reorganize numbers
+		//    1,2,3,3,3,7,120,12345
+		//List<T> can be referenced in the same fashion as an array, with an index
+		for (int i = 0; i < trackcollection.Count() - 1; i++)
+		{
+			var songname1 = Tracks
+								.Where(x => x.TrackId == trackcollection[i].TrackId)
+								.Select(x => x.Name)
+								.SingleOrDefault();
+			var songname2 = Tracks
+								.Where(x => x.TrackId == trackcollection[i + 1].TrackId)
+								.Select(x => x.Name)
+								.SingleOrDefault();
+			if (trackcollection[i].NewTrackNumber == trackcollection[i + 1].NewTrackNumber)
+			{
+				errorlist.Add(new Exception($"{songname1} and {songname2} have the same resequence number {trackcollection[i].NewTrackNumber}. Try again."));
+			}
+		}
+	
 		//resequence, regardless of the current track numbers, all tracks from 1 to keeplist.count
 		tracknumber = 1;
-		foreach(PlayListTrackTRX item in keeplist)
+		foreach(PlayListTrackTRX item in trackcollection)
 		{
 			//does the track exists on the database for this playlist
 			playlisttrackexist = PlaylistTracks
