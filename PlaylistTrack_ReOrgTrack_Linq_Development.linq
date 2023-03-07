@@ -29,12 +29,12 @@ void Main()
 		//see the old data
 		DisplayPlaylist(playlist, username );
 		//need to create a good set of data
-		//trackcollection = CreateGoodData();
+		trackcollection = CreateGoodData();
 		//need to create a bad set of data
 		//trackcollection = CreateBadData();
 		
 		//execute service to test for ALL possible errors that have been coded
-		//PlaylistTrack_ReOrgTracks(playlist, username, trackcollection);
+		PlaylistTrack_ReOrgTracks(playlist, username, trackcollection);
 		
 		//testing for missing parameters
 		//PlaylistTrack_ReOrgTracks(playlist, username, trackcollection);
@@ -90,30 +90,30 @@ public List<PlayListTrackTRX> CreateGoodData()
 		SelectedTrack = false,
 		TrackId = 54,
 		CurrentTrackNumber= 1,
-		NewTrackNumber = 0};
+		NewTrackNumber = 20};
 	info.Add(row);
 	row = new PlayListTrackTRX()
 	{
 		SelectedTrack = false,
 		TrackId = 122,
 		CurrentTrackNumber = 2,
-		NewTrackNumber = 0
+		NewTrackNumber = 11
 	};
 	info.Add(row);
 	row = new PlayListTrackTRX()
 	{
-		SelectedTrack = true,
+		SelectedTrack = false,
 		TrackId = 1,
 		CurrentTrackNumber = 3,
-		NewTrackNumber = 0
+		NewTrackNumber = 44
 	};
 	info.Add(row);
 	row = new PlayListTrackTRX()
 	{
-		SelectedTrack = true,
+		SelectedTrack = false,
 		TrackId = 12,
 		CurrentTrackNumber = 4,
-		NewTrackNumber = 0
+		NewTrackNumber = 13
 	};
 	info.Add(row);
 	row = new PlayListTrackTRX()
@@ -121,15 +121,15 @@ public List<PlayListTrackTRX> CreateGoodData()
 		SelectedTrack = false,
 		TrackId = 11,
 		CurrentTrackNumber = 5,
-		NewTrackNumber = 0
+		NewTrackNumber = 5
 	};
 	info.Add(row);
 	row = new PlayListTrackTRX()
 	{
-		SelectedTrack = true,
+		SelectedTrack = false,
 		TrackId = 200,
 		CurrentTrackNumber = 6,
-		NewTrackNumber = 0
+		NewTrackNumber = 7
 	};
 	info.Add(row);
 	row = new PlayListTrackTRX()
@@ -137,7 +137,7 @@ public List<PlayListTrackTRX> CreateGoodData()
 		SelectedTrack = false,
 		TrackId = 111,
 		CurrentTrackNumber = 7,
-		NewTrackNumber = 0
+		NewTrackNumber = 66
 	};
 	info.Add(row);
 	return info;
@@ -159,7 +159,7 @@ public List<PlayListTrackTRX> CreateBadData()
 		SelectedTrack = false,
 		TrackId = 122,
 		CurrentTrackNumber = 2,
-		NewTrackNumber = 0
+		NewTrackNumber = -10
 	};
 	info.Add(row);
 	row = new PlayListTrackTRX()
@@ -167,7 +167,7 @@ public List<PlayListTrackTRX> CreateBadData()
 		SelectedTrack = true,
 		TrackId = 1,
 		CurrentTrackNumber = 3,
-		NewTrackNumber = 0
+		NewTrackNumber = 2
 	};
 	info.Add(row);
 	row = new PlayListTrackTRX()
@@ -175,7 +175,7 @@ public List<PlayListTrackTRX> CreateBadData()
 		SelectedTrack = true,
 		TrackId = 12,
 		CurrentTrackNumber = 4,
-		NewTrackNumber = 0
+		NewTrackNumber = 3
 	};
 	info.Add(row);
 	row = new PlayListTrackTRX()
@@ -183,7 +183,7 @@ public List<PlayListTrackTRX> CreateBadData()
 		SelectedTrack = false,
 		TrackId = 110,
 		CurrentTrackNumber = 5,
-		NewTrackNumber = 0
+		NewTrackNumber = 5
 	};
 	info.Add(row);
 	row = new PlayListTrackTRX()
@@ -191,7 +191,7 @@ public List<PlayListTrackTRX> CreateBadData()
 		SelectedTrack = false,
 		TrackId = 200,
 		CurrentTrackNumber = 6,
-		NewTrackNumber = 0
+		NewTrackNumber = 5
 	};
 	info.Add(row);
 	row = new PlayListTrackTRX()
@@ -199,7 +199,7 @@ public List<PlayListTrackTRX> CreateBadData()
 		SelectedTrack = false,
 		TrackId = 111,
 		CurrentTrackNumber = 7,
-		NewTrackNumber = 0
+		NewTrackNumber = 3
 	};
 	info.Add(row);
 	return info;
