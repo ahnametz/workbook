@@ -1,0 +1,73 @@
+﻿{
+   "CodeGenerationMode": 2,
+   "ContextClassName": "ChinookContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": "Entities",
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "ChinookSystem",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "Name": "[dbo].[Albums]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Artists]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Customers]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Employees]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Genres]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MediaTypes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Playlists]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PlaylistTracks]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Tracks]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": "W309-DWELCH\\MSSQLSERVER01.Chinook",
+   "UncountableWords": null,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": true,
+   "UseDateOnlyTimeOnly": false,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": false,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": true,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSchemaFolders": false,
+   "UseSpatial": false,
+   "UseT4": false
+}
