@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChinookSystem.Entities
 {
-    public partial class PlaylistTrack
+    internal partial class PlaylistTrack
     {
         [Key]
         public int PlaylistId { get; set; }

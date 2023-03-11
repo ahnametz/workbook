@@ -5,9 +5,13 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace ChinookSystem.Entities
+#region Additional Namespaces
+using ChinookSystem.Entities;
+#endregion
+
+namespace ChinookSystem.DAL
 {
-    public partial class ChinookContext : DbContext
+    internal partial class ChinookContext : DbContext
     {
         public ChinookContext()
         {

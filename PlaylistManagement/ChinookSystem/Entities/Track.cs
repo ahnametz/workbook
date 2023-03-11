@@ -11,7 +11,7 @@ namespace ChinookSystem.Entities
     [Index("AlbumId", Name = "IFK_TracksAlbumId")]
     [Index("GenreId", Name = "IFK_TracksGenreId")]
     [Index("MediaTypeId", Name = "IFK_TracksMediaTypeId")]
-    public partial class Track
+    internal partial class Track
     {
         public Track()
         {

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace ChinookSystem.Entities
 {
     [Index("ArtistId", Name = "IFK_AlbumsArtistId")]
-    public partial class Album
+    internal partial class Album
     {
         public Album()
         {
@@ -18,12 +18,12 @@ namespace ChinookSystem.Entities
 
         [Key]
         public int AlbumId { get; set; }
-        [Required]
-        [StringLength(160)]
+        [Required(ErrorMessage = "Album title is required")]
+        [StringLength(160,ErrorMessage ="Album title is limited to 160 characters")]
         public string Title { get; set; }
         public int ArtistId { get; set; }
         public int ReleaseYear { get; set; }
-        [StringLength(50)]
+        [StringLength(50, ErrorMessage = "Album release label is limited to 50 characters")]
         [Unicode(false)]
         public string ReleaseLabel { get; set; }
 

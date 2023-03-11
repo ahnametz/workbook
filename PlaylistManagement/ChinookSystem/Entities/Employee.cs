@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace ChinookSystem.Entities
 {
     [Index("ReportsTo", Name = "IFK_EmployeesReportsTo")]
-    public partial class Employee
+    internal partial class Employee
     {
         public Employee()
         {

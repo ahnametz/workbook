@@ -6,10 +6,7 @@ using System.Threading.Tasks;
 
 namespace ChinookSystem.Models
 {
-    public class PickerInfo
+    internal class dummy
     {
-        public int PickerId { get; set; }
-        public string PickerName { get; set; }
-
     }
 }

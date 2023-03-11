@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChinookSystem.Entities
 {
-    public partial class MediaType
+    internal partial class MediaType
     {
         public MediaType()
         {

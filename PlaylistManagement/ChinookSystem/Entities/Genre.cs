@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChinookSystem.Entities
 {
-    public partial class Genre
+    internal partial class Genre
     {
         public Genre()
         {
