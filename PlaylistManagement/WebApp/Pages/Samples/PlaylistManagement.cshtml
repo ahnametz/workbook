@@ -1,0 +1,100 @@
+﻿@page "{searchBy?}/{searchArg?}/{playlistname?}"
+@model WebApp.Pages.SamplePages.PlaylistManagementModel
+@{
+    ViewData["Title"] = "Playlist Management";
+}
+
+@section CustomCSS{
+    <partial name=_MyCustomCSS />
+}
+<h1>Playlist Management</h1>
+<blockquote>
+    This page has  been created to demonstrate an UI interface for bulk maintenance
+    of data on the database, commonly referred to as <b>transactional processing</b>.
+    The page will allow the user to create or alter a list of tracks (Add, reorgnaize,
+    and remove) of a playlist.
+    <br/><br/>
+    Several UI techniques will be employeed on this page. This is not the only way
+    the interface could have been done. Special note should be directed to the 
+    display and collection of data from the Playlist table. This table will demonstrate
+    an implementation of using CQRS data models. The error list display demonstrates the
+    display of having multiple errors returned from a business service.
+
+</blockquote>
+
+@if (Model.HasFeedBack)
+{
+    <blockquote class="success">@Model.FeedBackMessage</blockquote>
+}
+
+@if (Model.HasError)
+{
+    <blockquote class="error">
+        @Model.ErrorMessage
+        <ul>
+            @foreach (var detail in Model.ErrorDetails)
+            {
+                <li>@detail</li>
+            }
+        </ul>
+    </blockquote>
+}
+<section class="setflex">
+    <div class="onehalf">
+        <form method="post">
+        <label>
+            Search pattern
+            <input type="text" asp-for="searchArg" />
+            <br/>
+            <input type="radio" asp-for="searchBy" value="Artist"/>&nbsp;&nbsp;Artist
+            &nbsp;&nbsp;
+            <input type="radio" asp-for="searchBy" value="Album"/>&nbsp;&nbsp;Album
+            &nbsp; &nbsp;
+            <button type="submit" asp-page-handler="TrackSearch"
+               title="Fetch tracks">Tracks ?</button>
+        </label>
+        </form>
+        @* 
+            table to go here
+            
+            *@
+           </div>
+    <div class="onehalf">
+        <form method="post" id="playlist">
+
+            <label>
+                Enter playlist name:
+                <input type="text" asp-for="playlistname" />
+            </label>
+            <br />
+            <button tye="submit" title="Retreive Playlist"
+                    asp-page-handler="Fetch">
+                Fetch List
+            </button>&nbsp;&nbsp;
+            @if (Model.qplaylistInfo != null &&
+                Model.qplaylistInfo.Count > 0)
+            {
+                <button tye="submit" title="Remove tracks"
+                        asp-page-handler="Remove"
+                        style="background-color:var(--danger-color)">
+                    Remove Tracks
+                </button>
+            }
+            &nbsp;&nbsp;
+            @if (Model.qplaylistInfo != null &&
+               Model.qplaylistInfo.Count > 0)
+            {
+                <button tye="submit" title="Reorganize playlist"
+                        asp-page-handler="ReOrg">
+                    Re-Org Tracks
+                </button>
+            }
+            <br /><br />
+
+            @*
+        table to go here
+
+            *@
+        </form>
+    </div>
+</section>

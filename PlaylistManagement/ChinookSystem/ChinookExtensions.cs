@@ -5,7 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 #region Additional Namespaces
+using ChinookSystem.BLL;
 using ChinookSystem.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -43,7 +45,17 @@ namespace ChinookSystem
             //    .AddTransient<T>(....) where T is the classname
             // where your service method exist
 
+            services.AddTransient<TrackServices>((serviceProvider) =>
+                {
+                    var context = serviceProvider.GetRequiredService<ChinookContext>();
+                    return new TrackServices(context);
+                });
 
+            services.AddTransient<PlaylistTrackServices>((serviceProvider) =>
+            {
+                var context = serviceProvider.GetRequiredService<ChinookContext>();
+                return new PlaylistTrackServices(context);
+            });
 
         }
     }
