@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/holiday.css@0.11.0" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/WebApp.styles.css" asp-append-version="true" />
+    @RenderSection("CustomCSS", required:false)
 </head>
 <body>
     <header>
@@ -46,6 +47,7 @@
                     <ul>
                         <li><a asp-area="" asp-page="/Samples/Index">Samples Home page</a></li>
                         <li><a asp-area="" asp-page="/Samples/Controls">Common Form Controls</a></li>
+                        <li><a asp-area="" asp-page="/Samples/ListtoList">Moving between lists</a></li>
                     </ul>
                 </li>
                 <li><a asp-area="" asp-page="/Samples/PlaylistManagement">Playlist Management</a></li>

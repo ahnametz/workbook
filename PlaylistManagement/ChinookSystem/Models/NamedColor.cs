@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace ChinookSystem.Models
 {
-    public  class SelectionList
+    public record NamedColor(string RgbCode, 
+        string HexCode, 
+        string Name, 
+        int ColorType, 
+        bool Available)
     {
-        public int ValueId { get; set; }
-        public string DisplayText { get;set; }
+       
     }
 }

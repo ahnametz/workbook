@@ -80,12 +80,14 @@ namespace WebApp.Pages.SamplePages
         public IActionResult OnPostTextBox()
         {
             Feedback = $"Email {EmailText}; Password {PasswordText}; Date {DateText}; Time {TimeText};";
+            PopulateList();
             return Page();
         }
 
         public IActionResult OnPostRadioCheckArea()
         {
             Feedback = $"Meal {Meal}; Acceptance {AcceptanceBox}; Message {MessageBody};";
+            PopulateList();
             return Page();
         }
 
