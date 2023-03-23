@@ -59,7 +59,7 @@
                                 <input type="hidden" name="AvailableColors[@item.Name].HexCode" value="@item.HexCode" />
                                 @item.HexCode
                             </td>
-                            <td>
+                            <td class="cellsize">
                                 @* tie value to incoming data index (see button above) *@
                                 <input type="hidden" name="AvailableColors[@item.Name].RgbCode" value="@item.RgbCode" />
                                 @item.RgbCode
@@ -76,7 +76,7 @@
                                     }
                                 </select>
                             </td>
-                            <td>
+                            <td class="cellalign">
                                 @* checkboxes should have a value=true when bound to a boolean variable
                                     when the name/value pair is set, IF check will be true. If NOT check
                                     then the name/value pair is not sent and the default of a boolean
@@ -149,7 +149,7 @@
                                     }
                                 </select>
                             </td>
-                            <td>
+                            <td class="cellalign">
                                 <input type="checkbox" name="ColorPallete[@item.Name].Available" 
                                        checked="@item.Available" value="true" />
                                 
