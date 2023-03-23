@@ -25,6 +25,18 @@
                     {
                         <tr>
                             <td>
+                                @*each row on the table is grouped for transfer around a unique value
+                                    within the collection.
+                                  as the data is move via BindProperty, records will be create in your
+                                    property based on the unique value
+                                  in setting up this table data to be transfered are NOT setup using asp-for
+                                  instead: name/value pairs are used
+                                       name: identities the attribute of the record
+                                       value: identities the value for the attribute
+                                  Index is a SPECIAL attribute used to assignment a "key type" attribute for
+                                      the record. IT IS NOT DEFINITION ON THE RECORD
+                                  the Index is attached to the desired collection (AvailableColors)
+                                *@
                                 <input type="hidden" name="AvailableColors.Index" value="@item.Name" />
                                 @* name and value are used instead of asp-for
                                     these are used here because we are going to a list of item
@@ -35,10 +47,11 @@
                                 </button>
                             </td>
                             <td>
-                                @* tie value to incoming data index (see button above)
+                                @* tie value to incoming data index [@item.Name] (see button above)
                                     The item.Name is the field of interest*@
                                 <input type="hidden" name="AvailableColors[@item.Name].Name" value="@item.Name" />
-                                <span style="display:inline-block; width: 16px; height: 16px; background-color:@item.HexCode"></span>
+                                <span style="display:inline-block; width: 16px; height: 16px; 
+                                                    background-color:@item.HexCode"></span>
                                 @item.Name
                             </td>
                             <td>
