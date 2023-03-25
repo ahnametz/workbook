@@ -24,7 +24,7 @@ namespace ChinookSystem.BLL
         #endregion
 
         #region Queries
-        List<PlaylistInfo> PlaylistTrack_FetchPlaylist(string playlistname, string username)
+        public List<PlaylistInfo> PlaylistTrack_FetchPlaylist(string playlistname, string username)
         {
             IEnumerable<PlaylistInfo> info = null;
             info = _context.PlaylistTracks
@@ -43,7 +43,7 @@ namespace ChinookSystem.BLL
         #endregion
 
         #region Service TRXs
-        void PlaylistTrack_AddTrack(string playlistname, string username, int trackid)
+        public void PlaylistTrack_AddTrack(string playlistname, string username, int trackid)
         {
             //this collection will hold all the errors found while processing the
             //	service method
@@ -188,7 +188,7 @@ namespace ChinookSystem.BLL
             }
         }
 
-        void PlaylistTrack_ReOrgTracks(string playlist, string username, List<PlayListTrackTRX> trackcollection)
+        public void PlaylistTrack_ReOrgTracks(string playlist, string username, List<PlayListTrackTRX> trackcollection)
         {
             List<Exception> errorlist = new List<Exception>();
             Track trackexist = null;
@@ -308,7 +308,7 @@ namespace ChinookSystem.BLL
             }
         }
 
-        void PlaylistTrack_RemoveTracks(string playlist, string username, List<PlayListTrackTRX> trackcollection)
+        public void PlaylistTrack_RemoveTracks(string playlist, string username, List<PlayListTrackTRX> trackcollection)
         {
             List<Exception> errorlist = new List<Exception>();
             Track trackexist = null;

@@ -1,9 +1,9 @@
-﻿@page "{searchBy?}/{searchArg?}/{playlistname?}"
+﻿@page 
 @model WebApp.Pages.SamplePages.PlaylistManagementModel
 @{
     ViewData["Title"] = "Playlist Management";
 }
-
+@*routing parameters? "{searchBy?}/{searchArg?}/{playlistname?}"*@
 @section CustomCSS{
     <partial name=_MyCustomCSS />
 }
@@ -53,12 +53,67 @@
             <button type="submit" asp-page-handler="TrackSearch"
                title="Fetch tracks">Tracks ?</button>
         </label>
+        
+        @if (Model.trackInfo.Count > 0)
+        {
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Song</th>
+                        <th>Album</th>
+                        <th>Artist</th>
+                        <th>Length</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.trackInfo)
+                    {
+                        <tr>
+                            <td>
+                                @* setup the index association for the record*@
+                                <input type="hidden" name="trackInfo.Index" value="@item.TrackId" />
+                                @* setup the data transfer between the control and the BindProperty field*@
+                                <input type="hidden" name="trackInfo[@item.TrackId].TrackId" value="@item.TrackId" />
+                                <button type="submit" name="addtrackid" value="@item.TrackId"
+                                        asp-page-handler="AddItem">
+                                    Add
+                                </button>
+                            </td>
+                            <td>
+                                @* setup the data transfer between the control and the BindProperty field*@
+                                <input type="hidden" name="trackInfo[@item.TrackId].SongName" value="@item.SongName" />
+                                @item.SongName
+                            </td>
+                            <td>
+
+                                <input type="hidden" name="trackInfo[@item.TrackId].AlbumTitle" value="@item.AlbumTitle" />
+                                @item.AlbumTitle
+                            </td>
+                            <td class="cellsize">
+
+                                <input type="hidden" name="trackInfo[@item.TrackId].ArtistName" value="@item.ArtistName" />
+                                @item.ArtistName
+                            </td>
+                            <td class="cellalign">
+                                <input type="hidden" name="trackInfo[@item.TrackId].Milliseconds" value="@item.Milliseconds" />
+                                @TimeSpan.FromMilliseconds(item.Milliseconds).ToString(@"mm\:ss")
+                            </td>
+                            <td class="cellalign">
+
+                                <input type="hidden" name="trackInfo[@item.TrackId].Price" value="@item.Price"/>
+                                @item.Price
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+         }   
+           
         </form>
-        @* 
-            table to go here
-            
-            *@
-           </div>
+    </div>
     <div class="onehalf">
         <form method="post" id="playlist">
 

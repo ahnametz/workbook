@@ -14,7 +14,15 @@ namespace WebApp.Pages.SamplePages
     public class PlaylistManagementModel : PageModel
     {
         #region Private variables and DI constructor
-       
+        private readonly TrackServices _trackServices;
+        private readonly PlaylistTrackServices _playlistServices;
+
+        public PlaylistManagementModel(TrackServices trackServices, 
+            PlaylistTrackServices playlistServices)
+        {
+            _trackServices=trackServices;
+            _playlistServices=playlistServices;
+        }
         #endregion
 
         #region Messaging and Error Handling
@@ -53,7 +61,8 @@ namespace WebApp.Pages.SamplePages
         [BindProperty(SupportsGet = true)]
         public string playlistname { get; set; }
 
-        public List<TrackSelection> trackInfo { get; set; }
+        [BindProperty]
+        public List<TrackSelection> trackInfo { get; set; } = new();
 
         public List<PlaylistInfo> qplaylistInfo { get; set; }
 
@@ -89,8 +98,40 @@ namespace WebApp.Pages.SamplePages
         }
         public IActionResult OnPostTrackSearch()
         {
-           
+            try
+            {
+                //did they press a radio button?
+                if (string.IsNullOrWhiteSpace(searchBy))
+                {
+                    Errors.Add(new Exception("Track search type not selected"));
+                }
+                //did they enter a search argument?
+                if (string.IsNullOrWhiteSpace(searchArg))
+                {
+                    Errors.Add(new Exception("Track search string not entered"));
+                }
+                if (Errors.Any())
+                {
+                    throw new AggregateException(Errors);
+                }
+                trackInfo = _trackServices.Track_FetchBy(searchArg, searchBy);
                 return Page();
+            }
+            catch (AggregateException ex)
+            {
+                ErrorMessage = "Unable to process search";
+                foreach(var error in ex.InnerExceptions) 
+                {
+                    ErrorDetails.Add(error.Message);
+                }
+                return Page();
+            }
+            catch (Exception ex) 
+            { 
+                ErrorMessage = GetInnerException(ex).Message;
+                return Page();
+            }
+            //return Page();
            
         }
 

@@ -22,12 +22,12 @@ namespace ChinookSystem.BLL
         #endregion
 
         #region Queries
-        List<TrackSelection> Track_FetchBy(string searcharg, string searchtype)
+        public List<TrackSelection> Track_FetchBy(string searcharg, string searchtype)
         {
             IEnumerable<TrackSelection> info = null;
             info = _context.Tracks
                     .Where(x => (searchtype.Equals("Album") && x.Album.Title.Contains(searcharg))
-                             ||
+                                ||
                                 (searchtype.Equals("Artist") && x.Album.Artist.Name.Contains(searcharg)))
                     .Select(x => new TrackSelection
                     {
