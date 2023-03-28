@@ -137,11 +137,81 @@ namespace WebApp.Pages.SamplePages
 
         public IActionResult OnPostFetch()
         {
-        return Page();
+            try
+            {
+                //did they enter a search argument?
+                if (string.IsNullOrWhiteSpace(playlistname))
+                {
+                    Errors.Add(new Exception("Enter a playlist name not entered"));
+                }
+                if (Errors.Any())
+                {
+                    throw new AggregateException(Errors);
+                }
+                //the username would be the login user name of the person using this form
+                //this username SHOULD come from the system via security
+                //HOWEVER we do not have security setup at this time SO a constant has
+                //      been created with a known user name.
+                qplaylistInfo = _playlistServices.PlaylistTrack_FetchPlaylist(playlistname, USERNAME);
+                return Page();
+            }
+            catch (AggregateException ex)
+            {
+                ErrorMessage = "Unable to process search";
+                foreach (var error in ex.InnerExceptions)
+                {
+                    ErrorDetails.Add(error.Message);
+                }
+                return Page();
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = GetInnerException(ex).Message;
+                return Page();
+            }
+
+            //return Page();
         }
 
         public IActionResult OnPostAddTrack()
         {
+
+            try
+            {
+                //did they enter a search argument?
+                if (string.IsNullOrWhiteSpace(playlistname))
+                {
+                    Errors.Add(new Exception("Enter a playlist name not entered"));
+                }
+                if (Errors.Any())
+                {
+                    throw new AggregateException(Errors);
+                }
+
+                _playlistServices.PlaylistTrack_AddTrack(playlistname, USERNAME, addtrackid);
+                //Refresh the playlist AFTER adding successfully to the playlist
+                qplaylistInfo = _playlistServices.PlaylistTrack_FetchPlaylist(playlistname, USERNAME);
+                return Page();
+            }
+            catch (AggregateException ex)
+            {
+                ErrorMessage = "Unable to add a track";
+                foreach (var error in ex.InnerExceptions)
+                {
+                    ErrorDetails.Add(error.Message);
+                }
+                qplaylistInfo = _playlistServices.PlaylistTrack_FetchPlaylist(playlistname, USERNAME);
+
+                return Page();
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = GetInnerException(ex).Message;
+                qplaylistInfo = _playlistServices.PlaylistTrack_FetchPlaylist(playlistname, USERNAME);
+
+                return Page();
+            }
+
             return Page();
 
         }

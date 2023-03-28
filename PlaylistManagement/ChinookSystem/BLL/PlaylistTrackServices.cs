@@ -111,7 +111,7 @@ namespace ChinookSystem.BLL
                     }
                     else
                     {
-                        errorlist.Add(new Exception($"Select track {trackid} already on play list."));
+                        errorlist.Add(new Exception($"Select track {trackexist.Name} already on play list."));
                     }
 
                 }

@@ -39,9 +39,10 @@
         </ul>
     </blockquote>
 }
+<form method="post">
 <section class="setflex">
     <div class="onehalf">
-        <form method="post">
+        
         <label>
             Search pattern
             <input type="text" asp-for="searchArg" />
@@ -77,7 +78,7 @@
                                 @* setup the data transfer between the control and the BindProperty field*@
                                 <input type="hidden" name="trackInfo[@item.TrackId].TrackId" value="@item.TrackId" />
                                 <button type="submit" name="addtrackid" value="@item.TrackId"
-                                        asp-page-handler="AddItem">
+                                        asp-page-handler="AddTrack">
                                     Add
                                 </button>
                             </td>
@@ -112,10 +113,9 @@
             </table>
          }   
            
-        </form>
+
     </div>
     <div class="onehalf">
-        <form method="post" id="playlist">
 
             <label>
                 Enter playlist name:
@@ -145,11 +145,58 @@
                 </button>
             }
             <br /><br />
+            @if (Model.qplaylistInfo != null)
+            {
+                if (Model.qplaylistInfo.Count == 0)
+                {
+                    <p style="color:blue; font-weight:bold;">This playlist is empty or does not exists.
+                        Adding a track will create the playlist.
+                    </p>
+                }
+                else
+                {
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Trk #</th>
+                                <th>Song</th>
+                                <th>Length</th>
+                                <th>Reorg Trk#</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach(var item in Model.qplaylistInfo)
+                            {
+                                <tr>
+                                    <td>
+                                        <input type="hidden" name="cplaylistInfo.Index" value="@item.TrackId" />
+                                        <input type="hidden" name="cplaylistInfo[@item.TrackId].Trackid" value="@item.TrackId" />
+                                        <input type="checkbox" name="cplaylistInfo[@item.TrackId].SelectedTrack" value="true">
+                                    </td>
+                                    <td>
+                                        <input type="hidden" name="cplaylistInfo[@item.TrackId].CurrentTrackNumber" value="@item.TrackNumber" />
+                                        @item.TrackNumber
+                                    </td>
+                                    <td>
+                                        @item.SongName
+                                    </td>
+                                    <td>
+                                        @TimeSpan.FromMilliseconds(item.Milliseconds).ToString(@"mm\:ss")
 
-            @*
-        table to go here
+                                    </td>
+                                    <td>
+                                        <input type="number" name="cplaylistInfo[@item.TrackId].NewTrackNumber" value="" />
 
-            *@
-        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            }
+            
+        
     </div>
 </section>
+</form>
